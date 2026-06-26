@@ -18,6 +18,15 @@ std::string SoapyFile::getDriverKey(void) const { return "file"; }
 
 std::string SoapyFile::getHardwareKey(void) const { return "file"; }
 
+SoapySDR::Kwargs SoapyFile::getHardwareInfo(void) const
+{
+    SoapySDR::Kwargs args = SoapySDR::Kwargs();
+    args["path"] = _path;
+    args["rate"] = _sampleRate;
+    args["freq"] = _centerFreq;
+    return args;
+}
+
 std::vector<std::string> SoapyFile::getStreamFormats (const int direction, const size_t channel) const 
 { 
     return (direction == SOAPY_SDR_RX) ? std::vector<std::string>{SOAPY_SDR_CF32} : std::vector<std::string>{}; 
@@ -120,6 +129,106 @@ int SoapyFile::readStream (SoapySDR::Stream *stream, void *const *buffs, const s
     _samplesDelivered += int(samplesRead);
     return int(samplesRead);
 
+}
+
+void SoapyFile::setSampleRate (const int direction, const size_t channel, const double rate)
+{
+    _sampleRate = rate;
+}
+
+double SoapyFile::getSampleRate (const int direction, const size_t channel) const
+{
+    return _sampleRate;
+}
+
+std::vector<double> SoapyFile::listSampleRates (const int direction, const size_t channel) const
+{
+    return std::vector<double>{_sampleRate};
+}
+
+SoapySDR::RangeList SoapyFile::getSampleRateRange (const int direction, const size_t channel) const
+{
+    return SoapySDR::RangeList{SoapySDR::Range(_sampleRate, _sampleRate)};
+}
+
+void SoapyFile::setFrequency (const int direction, const size_t channel, const double frequency, const SoapySDR::Kwargs &args=SoapySDR::Kwargs())
+{
+    _centerFreq = frequency;
+}
+
+double SoapyFile::getFrequency (const int direction, const size_t channel) const
+{
+    return _centerFreq;
+}
+
+std::vector<std::string> SoapyFile::listFrequencies (const int direction, const size_t channel) const
+{
+    return std::vector<std::string>{"RF"};
+}
+
+SoapySDR::RangeList SoapyFile::getFrequencyRange (const int direction, const size_t channel) const
+{
+    return SoapySDR::RangeList{SoapySDR::Range(_centerFreq - _sampleRate/2, _centerFreq + _sampleRate/2)};
+}
+
+std::vector<std::string> SoapyFile::listGains (const int direction, const size_t channel) const
+{
+    return std::vector<std::string>{};
+}
+
+bool SoapyFile::hasGainMode (const int direction, const size_t channel) const
+{
+    return false;
+}
+
+void SoapyFile::setGain (const int direction, const size_t channel, const double value)
+{
+    return;
+}
+
+double SoapyFile::getGain (const int direction, const size_t channel) const
+{
+    return 0;
+}
+
+SoapySDR::Range SoapyFile::getGainRange (const int direction, const size_t channel) const
+{
+    return SoapySDR::Range(0, 0);
+}
+
+std::vector<std::string> SoapyFile::listAntennas (const int direction, const size_t channel) const
+{
+    return std::vector<std::string>{"RX"};
+}
+
+void SoapyFile::setAntenna (const int direction, const size_t channel, const std::string &name)
+{
+    return;
+}
+
+std::string SoapyFile::getAntenna (const int direction, const size_t channel) const
+{
+    return "RX";
+}
+
+void SoapyFile::setBandwidth (const int direction, const size_t channel, const double bw)
+{
+    _sampleRate = bw;
+}
+
+double SoapyFile::getBandwidth (const int direction, const size_t channel) const
+{
+    return _sampleRate;
+}
+
+std::vector<double> SoapyFile::listBandwidths (const int direction, const size_t channel) const
+{
+    return std::vector<double>{_sampleRate};
+}
+
+SoapySDR::RangeList SoapyFile::getBandwidthRange (const int direction, const size_t channel) const
+{
+    return SoapySDR::RangeList{SoapySDR::Range(_sampleRate, _sampleRate)};
 }
 
 /***********************************************************************

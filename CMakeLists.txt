@@ -13,6 +13,8 @@ if(NOT CMAKE_BUILD_TYPE)
 endif(NOT CMAKE_BUILD_TYPE)
 set(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "")
 set(CMAKE_CXX_STANDARD 11)
+set(GCC_COVERAGE_COMPILE_FLAGS "-Wunused-variable -Wunused-parameter")
+add_definitions(${GCC_COVERAGE_COMPILE_FLAGS})
 
 ########################################################################
 # Header and library resources needed to communicate with the device.
