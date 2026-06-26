@@ -47,7 +47,7 @@ SoapySDR::Stream* SoapyFile::setupStream (const int direction, const std::string
     if (direction != SOAPY_SDR_RX) { throw std::runtime_error("TX SoapySDR::Stream was asked, but the only channel available is RX."); }
     if (format  != SOAPY_SDR_CF32) { throw std::runtime_error("Asked format is not available, the only format currently implemented is CF32."); }
 
-    std::ifstream _file(_path, std::ios::binary);
+    _file.open(_path, std::ios::binary);
     if (!_file.is_open()) { throw std::runtime_error("Tried to open file " + _path + ", but it failed to open with error: \"" + std::strerror(errno) + "\"."); }
 
     return (SoapySDR::Stream *)(this);
@@ -63,7 +63,7 @@ int SoapyFile::activateStream (SoapySDR::Stream *stream, const int flags=0, cons
 {
     _startTime = std::chrono::steady_clock::now();
     _samplesDelivered = 0;
-    if (((flags & (1 << 2)) != 0 && timeNs != 0) || numElems != 0) { return SOAPY_SDR_NOT_SUPPORTED; }
+    if ((flags & (1 << 2)) != 0 && timeNs != 0) { return SOAPY_SDR_NOT_SUPPORTED; }
     return 0;
 }
 
@@ -86,20 +86,9 @@ int SoapyFile::readStream (SoapySDR::Stream *stream, void *const *buffs, const s
 
     _file.read(reinterpret_cast<char *>(out + _residualLength), bytesAsked - _residualLength);
     std::streamsize bytesRead = _residualLength + _file.gcount();
-    if (_file.eof()) 
+    if (_file.eof() || _file.fail()) 
     {
-        /*
-         * if (_repeat)
-         * {
-         *  size_t bytesMissing = bytesAsked - bytesRead;
-         *  _file.clear(failbit|eofbit);
-         *  _file.setstate(goodbit);
-         *  _file.seekg(0);
-         *  _file.read(reinterpret_cast<char*>out, bytesMissing)
-         * }
-         * else
-         */
-        return SOAPY_SDR_STREAM_ERROR;
+        _file.clear();
     }
     const size_t bytesPerSample = 2 * sizeof(float);
     size_t samplesRead = bytesRead / bytesPerSample;
