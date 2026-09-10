@@ -16,10 +16,10 @@
 /***********************************************************************
  * Device interface
  **********************************************************************/
-class SoapyFile : public SoapySDR::Device
+class SoapyIQFile : public SoapySDR::Device
 {
     public:
-        SoapyFile(const SoapySDR::Kwargs &args);
+        SoapyIQFile(const SoapySDR::Kwargs &args);
 
         std::string getDriverKey(void) const override;
         std::string getHardwareKey(void) const override;

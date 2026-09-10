@@ -35,7 +35,7 @@ endif ()
 
 include_directories(${MY_DEVICE_INCLUDE_DIRS})
 SOAPY_SDR_MODULE_UTIL(
-    TARGET file
-    SOURCES SoapyFile.cpp
+    TARGET iqfile
+    SOURCES SoapyIQFile.cpp
     LIBRARIES ${MY_DEVICE_LIBRARIES}
 )

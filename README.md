@@ -1,4 +1,4 @@
-# SoapyFile: Mock-up Driver para SoapySDR
+# SoapyIQFile: Mock-up Driver para SoapySDR
 
 Este repositorio contiene un driver virtual para SoapySDR escrito en C++. 
 Su función principal es simular un dispositivo SDR de hardware físico en sistemas Linux. 
@@ -23,8 +23,8 @@ ABI Version: v0.8
 Install root: /usr
 Search path:  /usr/lib/SoapySDR/modules0.8                  (missing)
 Search path:  /usr/local/lib/SoapySDR/modules0.8
-Module found: /usr/local/lib/SoapySDR/modules0.8/libfile.so (ef5e55e) # El módulo
-Available factories... file # La factory
+Module found: /usr/local/lib/SoapySDR/modules0.8/libiqfile.so (ef5e55e) # El módulo
+Available factories... iqfile # La factory
 Available converters...
  -  CF32 -> [CF32, CS16, CS8, CU16, CU8]
  -  CS16 -> [CF32, CS16, CS8, CU16, CU8]
